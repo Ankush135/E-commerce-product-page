@@ -8,23 +8,17 @@ let actualValue = +quantity.innerText;
 let price = document.querySelector('[data-price]');
 let discount = document.querySelector('[data-discount]');
 
-// Cart Update
 const cartQuantity = document.querySelector('[data-cartQuantity]');
 const cartPrice = document.querySelector('[data-cartPrice]');
 
-// Constant Updating of cart
 const selectProduct = document.querySelector('[data-selectProduct]');
 const noSelection = document.querySelector('[data-noSelection]');
 
-
-
-// This block of code contain an event listener that shows the sideBar on a mobile screen
 openSideBar.addEventListener('click', (event)=>{
     event.preventDefault();
     sideBar.classList.remove('d-none')
 })
 
-// This block of code contain an event listener that hides the sideBar on a mobile screen
 closeSideBar.addEventListener('click', (event)=>{
     event.preventDefault();
     if(sideBar.classList.contains('d-block')){
@@ -33,7 +27,6 @@ closeSideBar.addEventListener('click', (event)=>{
     sideBar.classList.add('d-none')
 })
 
-// This block of code contain an event listener that decreases the amount of product users want
 decrementBtn.addEventListener('click', (event)=>{
     event.preventDefault();
     if(actualValue === 0){
@@ -46,7 +39,6 @@ decrementBtn.addEventListener('click', (event)=>{
     return
 })
 
-// This block of code contain an event listener that increases the amount of product users want
 incrementBtn.addEventListener('click', (event)=>{
     event.preventDefault();
     actualValue +=1
@@ -62,7 +54,7 @@ addToCart.addEventListener('click', (event)=>{
     event.preventDefault()
     totalItems.innerText = actualValue;
 })
-// This a function that calculate the price of the product related to the quantity selected by users
+
 const priceCalculator = ()=>{
     if(actualValue === 0){
         price.innerText = '$125.00'
@@ -83,7 +75,7 @@ const updateCart = ()=>{
         noSelection.classList.remove('d-none');
     }
 }
-// Reset Cart
+
 const resetCart = document.querySelector('[data-resetCart]');
 resetCart.addEventListener('click', (event)=>{
     event.preventDefault()
@@ -96,7 +88,6 @@ resetCart.addEventListener('click', (event)=>{
     discount.innerText = '$250.00'
 })
 
-// Make cart visible
 basket = document.querySelector('[data-basket]')
 const cart = document.querySelector('[data-cart]')
 cart.addEventListener('click', (event)=>{
@@ -107,7 +98,7 @@ cart.addEventListener('click', (event)=>{
         basket.classList.add('d-none');
     }
 })
-// This is my photo gallery section. 
+ 
 const imageThumbnail = document.querySelectorAll('[data-imageThumbnail]');
 const banner = document.querySelector('[data-banner]');
 const bannerGallery = [
@@ -117,7 +108,6 @@ const bannerGallery = [
     {src:'./images/image-product-4.jpg'}
 ]
 
-// This function makes my image ready before the user request for it
 const preloadImages = (images) => {
     images.forEach(image => {
         const img = new Image();
