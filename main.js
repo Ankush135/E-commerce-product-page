@@ -24,12 +24,14 @@ const resetCart = document.querySelector('[data-resetCart]');
 const basket = document.querySelector('[data-basket]');
 const cart = document.querySelector('[data-cart]');
 
-const checkoutBtn = document.querySelector('.checkout');
+const checkoutBtn = document.querySelector('[data-checkout]');
+const checkoutPopup = document.querySelector('[data-checkoutPopup]');
+const closePopup = document.querySelector('[data-closePopup]');
 
 
-/* ===============================
+/* =========================
    SIDEBAR
-================================ */
+========================= */
 
 if (openSideBar && sideBar) {
     openSideBar.addEventListener('click', (event) => {
@@ -46,52 +48,60 @@ if (closeSideBar && sideBar) {
 }
 
 
-/* ===============================
-   QUANTITY
-================================ */
+/* =========================
+   UPDATE CART
+========================= */
 
-function updateQuantity() {
-    quantity.innerText = actualValue;
+function updateCart() {
+    if (actualValue > 0) {
+        selectProduct.classList.remove('d-none');
+        noSelection.classList.add('d-none');
+    } else {
+        selectProduct.classList.add('d-none');
+        noSelection.classList.remove('d-none');
+    }
 }
 
 
-/* ===============================
-   PRICE CALCULATOR
-================================ */
+/* =========================
+   UPDATE PRICE
+========================= */
 
 function priceCalculator() {
     if (actualValue === 0) {
         price.innerText = '$125.00';
         discount.innerText = '$250.00';
+        cartPrice.innerText = '$0.00';
     } else {
         const totalPrice = actualValue * 125;
         const originalPrice = actualValue * 250;
 
         price.innerText = `$${totalPrice.toFixed(2)}`;
         discount.innerText = `$${originalPrice.toFixed(2)}`;
-
         cartPrice.innerText = `$${totalPrice.toFixed(2)}`;
     }
+
+    updateCart();
 }
 
 
-/* ===============================
+/* =========================
    INCREMENT
-================================ */
+========================= */
 
 incrementBtn.addEventListener('click', (event) => {
     event.preventDefault();
 
     actualValue++;
 
-    updateQuantity();
+    quantity.innerText = actualValue;
     priceCalculator();
 });
 
 
-/* ===============================
+/* =========================
    DECREMENT
-================================ */
+========================= */
 
 decrementBtn.addEventListener('click', (event) => {
     event.preventDefault();
@@ -100,20 +110,20 @@ decrementBtn.addEventListener('click', (event) => {
         actualValue--;
     }
 
-    updateQuantity();
+    quantity.innerText = actualValue;
     priceCalculator();
 });
 
 
-/* ===============================
+/* =========================
    ADD TO CART
-================================ */
+========================= */
 
 addToCart.addEventListener('click', (event) => {
     event.preventDefault();
 
     if (actualValue === 0) {
-        showMessage('Please select at least one item.');
+        alert('Please select at least one item.');
         return;
     }
 
@@ -124,39 +134,34 @@ addToCart.addEventListener('click', (event) => {
     noSelection.classList.add('d-none');
 
     priceCalculator();
-
-    showMessage('Item added to your cart!');
 });
 
 
-/* ===============================
-   DELETE / RESET CART
-================================ */
+/* =========================
+   RESET CART
+========================= */
 
 resetCart.addEventListener('click', (event) => {
     event.preventDefault();
 
     actualValue = 0;
 
-    updateQuantity();
-
-    totalItems.innerText = '0';
-    cartQuantity.innerText = '0';
-
-    selectProduct.classList.add('d-none');
-    noSelection.classList.remove('d-none');
+    quantity.innerText = 0;
+    cartQuantity.innerText = 0;
+    totalItems.innerText = 0;
 
     price.innerText = '$125.00';
     discount.innerText = '$250.00';
     cartPrice.innerText = '$0.00';
 
-    showMessage('Item removed from your cart.');
+    selectProduct.classList.add('d-none');
+    noSelection.classList.remove('d-none');
 });
 
 
-/* ===============================
-   CART OPEN / CLOSE
-================================ */
+/* =========================
+   OPEN / CLOSE CART
+========================= */
 
 cart.addEventListener('click', (event) => {
     event.preventDefault();
@@ -165,83 +170,56 @@ cart.addEventListener('click', (event) => {
 });
 
 
-/* ===============================
+/* =========================
    CHECKOUT
-================================ */
+========================= */
 
 if (checkoutBtn) {
     checkoutBtn.addEventListener('click', (event) => {
         event.preventDefault();
 
         if (actualValue === 0) {
-            showMessage('Your cart is empty!');
+            alert('Your cart is empty!');
             return;
         }
 
-        showMessage('🎉 Purchase successful! Thank you for your order.');
+        // Show success popup
+        checkoutPopup.classList.remove('d-none');
 
-        // Clear cart after successful checkout
+        // Reset everything after purchase
         actualValue = 0;
 
-        updateQuantity();
-
-        totalItems.innerText = '0';
-        cartQuantity.innerText = '0';
-
-        selectProduct.classList.add('d-none');
-        noSelection.classList.remove('d-none');
+        quantity.innerText = 0;
+        cartQuantity.innerText = 0;
+        totalItems.innerText = 0;
 
         price.innerText = '$125.00';
         discount.innerText = '$250.00';
         cartPrice.innerText = '$0.00';
 
-        // Close cart after checkout
-        setTimeout(() => {
-            basket.classList.add('d-none');
-        }, 1500);
+        selectProduct.classList.add('d-none');
+        noSelection.classList.remove('d-none');
+
+        // Close the cart
+        basket.classList.add('d-none');
     });
 }
 
 
-/* ===============================
-   SUCCESS MESSAGE / POPUP
-================================ */
+/* =========================
+   CLOSE SUCCESS POPUP
+========================= */
 
-function showMessage(message) {
-    const oldMessage = document.querySelector('.custom-message');
-
-    if (oldMessage) {
-        oldMessage.remove();
-    }
-
-    const messageBox = document.createElement('div');
-
-    messageBox.className = 'custom-message';
-    messageBox.innerText = message;
-
-    messageBox.style.position = 'fixed';
-    messageBox.style.top = '30px';
-    messageBox.style.left = '50%';
-    messageBox.style.transform = 'translateX(-50%)';
-    messageBox.style.background = '#ff7d1a';
-    messageBox.style.color = 'white';
-    messageBox.style.padding = '15px 25px';
-    messageBox.style.borderRadius = '8px';
-    messageBox.style.fontWeight = 'bold';
-    messageBox.style.zIndex = '9999';
-    messageBox.style.boxShadow = '0 5px 20px rgba(0,0,0,0.2)';
-
-    document.body.appendChild(messageBox);
-
-    setTimeout(() => {
-        messageBox.remove();
-    }, 2500);
+if (closePopup) {
+    closePopup.addEventListener('click', () => {
+        checkoutPopup.classList.add('d-none');
+    });
 }
 
 
-/* ===============================
+/* =========================
    PRODUCT IMAGE GALLERY
-================================ */
+========================= */
 
 const imageThumbnail = document.querySelectorAll('[data-imageThumbnail]');
 const banner = document.querySelector('[data-banner]');
@@ -254,21 +232,9 @@ const bannerGallery = [
 ];
 
 
-const preloadImages = (images) => {
-    images.forEach((image) => {
-        const img = new Image();
-        img.src = image.src;
-    });
-};
-
-preloadImages(bannerGallery);
-
-
 imageThumbnail.forEach((thumbnail, index) => {
     thumbnail.addEventListener('click', () => {
-        const image = index + 1;
-
         banner.src = bannerGallery[index].src;
-        banner.alt = `image product ${image}`;
+        banner.alt = `image product ${index + 1}`;
     });
 });
