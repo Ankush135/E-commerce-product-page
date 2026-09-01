@@ -219,6 +219,9 @@ button{
 .d-none,.menu{
     display: none;
 }
+.d-none {
+    display: none !important;
+}
 .d-block{
     display: block;
 }
