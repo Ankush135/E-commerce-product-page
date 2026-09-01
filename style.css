@@ -222,6 +222,41 @@ button{
 .d-block{
     display: block;
 }
+.checkout-popup {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.45);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+}
+
+.checkout-message {
+    background: white;
+    padding: 35px 45px;
+    border-radius: 12px;
+    text-align: center;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.25);
+}
+
+.checkout-message h2 {
+    margin-bottom: 15px;
+}
+
+.checkout-message p {
+    margin-bottom: 20px;
+}
+
+.checkout-message button {
+    border: none;
+    background: hsl(26, 100%, 55%);
+    color: white;
+    padding: 12px 25px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+}
 @media (max-width : 900px){
     body{
         width: 100%
